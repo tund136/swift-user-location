@@ -36,6 +36,11 @@ final class ContentViewModel: NSObject, ObservableObject, CLLocationManagerDeleg
     
     let locationManager = CLLocationManager()
     
+    override init() {
+        super.init()
+        locationManager.delegate = self
+    }
+    
     func requestAllowOnceLocationPermission() {
         locationManager.requestLocation()
     }
