@@ -33,6 +33,8 @@ struct ContentView: View {
 
 final class ContentViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
     @Published var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 40, longitude: 120), span: MKCoordinateSpan(latitudeDelta: 100, longitudeDelta: 100))
+    
+    let locationManager = CLLocationManager()
 }
 
 struct ContentView_Previews: PreviewProvider {
