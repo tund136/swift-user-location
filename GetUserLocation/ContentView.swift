@@ -19,7 +19,7 @@ struct ContentView: View {
                 .tint(.pink)
             
             LocationButton(.currentLocation) {
-                print("")
+                viewModel.requestAllowOnceLocationPermission()
             }
             .foregroundColor(.white)
             .cornerRadius(10)
@@ -35,6 +35,25 @@ final class ContentViewModel: NSObject, ObservableObject, CLLocationManagerDeleg
     @Published var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 40, longitude: 120), span: MKCoordinateSpan(latitudeDelta: 100, longitudeDelta: 100))
     
     let locationManager = CLLocationManager()
+    
+    func requestAllowOnceLocationPermission() {
+        locationManager.requestLocation()
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let latestLocation = locations.first else {
+            // Show an error
+            return
+        }
+        
+        DispatchQueue.main.async {
+            self.region = MKCoordinateRegion(center: latestLocation.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print(error.localizedDescription)
+    }
 }
 
 struct ContentView_Previews: PreviewProvider {
