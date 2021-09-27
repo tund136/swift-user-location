@@ -10,11 +10,11 @@ import MapKit
 import SwiftUI
 
 struct ContentView: View {
-    @State private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 40, longitude: 120), span: MKCoordinateSpan(latitudeDelta: 100, longitudeDelta: 100))
+    @StateObject private var viewModel = ContentViewModel()
     
     var body: some View {
         ZStack(alignment: .bottom) {
-            Map(coordinateRegion: $region, showsUserLocation: true)
+            Map(coordinateRegion: $viewModel.region, showsUserLocation: true)
                 .ignoresSafeArea()
                 .tint(.pink)
             
@@ -29,6 +29,10 @@ struct ContentView: View {
             .padding(.bottom)
         }
     }
+}
+
+final class ContentViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
+    @Published var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 40, longitude: 120), span: MKCoordinateSpan(latitudeDelta: 100, longitudeDelta: 100))
 }
 
 struct ContentView_Previews: PreviewProvider {
